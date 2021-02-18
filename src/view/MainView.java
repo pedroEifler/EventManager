@@ -20,6 +20,7 @@ public class MainView extends JFrame {
 				try {
 					MainView frame = new MainView();
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -31,7 +32,9 @@ public class MainView extends JFrame {
 	 * Create the frame.
 	 */
 	public MainView() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
+		setTitle("Event Manager");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
