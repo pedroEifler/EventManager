@@ -19,6 +19,9 @@ public class Evento {
 	}
 
 	/*---Set---*/
+	public void setId(int id) {
+		this.id = id;
+	}
 	public void setNome(String nome) {
 		this.nome = nome;
 	}

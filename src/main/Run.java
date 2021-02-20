@@ -5,7 +5,9 @@ import view.MainView;
 public class Run {
 
 	public static void main(String[] args) {
-		new MainView().setVisible(true);
+		MainView main = new MainView();
+		main.setLocationRelativeTo(null);
+		main.setVisible(true);
 	}
 
 }

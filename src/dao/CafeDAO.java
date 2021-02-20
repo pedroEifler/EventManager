@@ -35,21 +35,37 @@ public class CafeDAO {
 		return lista;
 	}
 
-	public ArrayList<Cafe> listarTodosId(int id) {
+	public Cafe listarTodosId(int id) {
 		String sql = "SELECT * FROM cafe WHERE id = " + id;
+		Cafe cafe = new Cafe();
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
-				Cafe cafe = new Cafe();
 				cafe.setNome(rs.getString("nome"));
 				cafe.setLotacao(rs.getInt("lotacao"));
-				lista.add(cafe);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Erro: " + e);
 		}
-		return lista;
+		return cafe;
+	}
+
+	public Cafe listarTodosNome(String nome) {
+		String sql = "SELECT * FROM cafe WHERE nome LIKE '%" + nome + "%'";
+		Cafe cafe = new Cafe();
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			while (rs.next()) {
+				cafe.setId(rs.getInt("id"));
+				cafe.setNome(rs.getString("nome"));
+				cafe.setLotacao(rs.getInt("lotacao"));
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Erro: " + e);
+		}
+		return cafe;
 	}
 
 	public void inserir(Cafe cafe) {

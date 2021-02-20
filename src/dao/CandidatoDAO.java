@@ -5,9 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import org.omg.CORBA.portable.ValueOutputStream;
-
 import model.Candidato;
 
 public class CandidatoDAO {
@@ -28,10 +25,11 @@ public class CandidatoDAO {
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
 				Candidato candidato = new Candidato();
+				candidato.setId(rs.getInt("id"));
 				candidato.setNome(rs.getString("nome"));
 				candidato.setSobrenome(rs.getString("sobrenome"));
-				candidato.setEventos(rs.getInt("eventos"));
-				candidato.setCafe(rs.getInt("cafe"));
+				candidato.setEventos(new EventoDAO().listarTodosId(rs.getInt("eventos")));
+				candidato.setCafe(new CafeDAO().listarTodosId(rs.getInt("cafe")));
 				lista.add(candidato);
 			}
 		} catch (Exception e) {
@@ -47,10 +45,11 @@ public class CandidatoDAO {
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
 				Candidato candidato = new Candidato();
+				candidato.setId(rs.getInt("id"));
 				candidato.setNome(rs.getString("nome"));
 				candidato.setSobrenome(rs.getString("sobrenome"));
-				candidato.setEventos(rs.getInt("eventos"));
-				candidato.setCafe(rs.getInt("cafe"));
+				candidato.setEventos(new EventoDAO().listarTodosId(rs.getInt("eventos")));
+				candidato.setCafe(new CafeDAO().listarTodosId(rs.getInt("cafe")));
 				lista.add(candidato);
 			}
 		} catch (Exception e) {
@@ -60,7 +59,7 @@ public class CandidatoDAO {
 	}
 
 	public void inserir(Candidato candidato) {
-		String sql = "INSERT INTO cadidatos (nome, sobrenome, eventos, cafe) VALUES (?,?,?,?)";
+		String sql = "INSERT INTO candidatos (nome, sobrenome, eventos, cafe) VALUES (?,?,?,?)";
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, candidato.getNome());
@@ -82,6 +81,7 @@ public class CandidatoDAO {
 			stmt.setString(2, candidato.getSobrenome());
 			stmt.setInt(3, candidato.getEventos().getId());
 			stmt.setInt(4, candidato.getCafe().getId());
+			stmt.setInt(5, candidato.getId());
 			stmt.execute();
 			stmt.close();
 		} catch (Exception e) {

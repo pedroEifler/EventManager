@@ -35,21 +35,39 @@ public class EventoDAO {
 		return lista;
 	}
 
-	public ArrayList<Evento> listarTodosId(int id) {
+	public Evento listarTodosId(int id) {
 		String sql = "SELECT * FROM eventos WHERE id = " + id;
+		Evento evento = new Evento();
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
-				Evento evento = new Evento();
+				evento.setId(rs.getInt("id"));
 				evento.setNome(rs.getString("nome"));
 				evento.setLotacao(rs.getInt("lotacao"));
-				lista.add(evento);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Erro: " + e);
 		}
-		return lista;
+		return evento;
+	}
+	
+	public Evento listarTodosNome(String nome) {
+		String sql = "SELECT * FROM eventos WHERE nome LIKE '%" + nome + "%'";
+		Evento evento = new Evento();
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			while (rs.next()) {
+				evento.setId(rs.getInt("id"));
+				evento.setNome(rs.getString("nome"));
+				evento.setLotacao(rs.getInt("lotacao"));
+				System.out.println(evento.getNome());
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Erro: " + e);
+		}
+		return evento;
 	}
 
 	public void inserir(Evento evento) {
