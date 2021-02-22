@@ -62,6 +62,14 @@ public class MainView extends JFrame {
 
 		/*---Salas---*/
 		JButton btSalas = new JButton("Salas");
+		btSalas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EventoView eventoView = new EventoView();
+				eventoView.setLocationRelativeTo(null);
+				eventoView.setVisible(true);
+				setVisible(false);
+			}
+		});
 		btSalas.setForeground(Color.BLACK);
 		btSalas.setIcon(new ImageIcon("C:\\Users\\pedro\\eclipse-workspace\\EventManager\\util\\calendar-icon.png"));
 		btSalas.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -70,6 +78,14 @@ public class MainView extends JFrame {
 
 		/*---Cafe---*/
 		JButton btCafe = new JButton("Caf\u00E9");
+		btCafe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CafeView cafeView = new CafeView();
+				cafeView.setLocationRelativeTo(null);
+				cafeView.setVisible(true);
+				setVisible(false);
+			}
+		});
 		btCafe.setIcon(new ImageIcon("C:\\Users\\pedro\\eclipse-workspace\\EventManager\\util\\tea-icon.png"));
 		btCafe.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btCafe.setBounds(10, 107, 154, 37);

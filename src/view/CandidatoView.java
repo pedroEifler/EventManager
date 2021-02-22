@@ -5,26 +5,23 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import table.CandidatoTableModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.EventQueue;
-
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
-
 import dao.CafeDAO;
 import dao.CandidatoDAO;
 import dao.EventoDAO;
 import model.Cafe;
 import model.Candidato;
 import model.Evento;
-
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
-import javax.swing.DropMode;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -43,6 +40,10 @@ public class CandidatoView extends JFrame {
 	private JTextField tfPesquisar;
 	private JTable table;
 	private JTextField tfId;
+	private JComboBox cbEvento;
+	private JComboBox cbCafe;
+	private CandidatoDAO dao = new CandidatoDAO();
+	private Candidato candidato = new Candidato();
 
 	/**
 	 * Launch the application.
@@ -65,6 +66,7 @@ public class CandidatoView extends JFrame {
 	 * Create the frame.
 	 */
 	public CandidatoView() {
+		setTitle("Candidatos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
 		contentPane = new JPanel();
@@ -73,7 +75,7 @@ public class CandidatoView extends JFrame {
 		contentPane.setLayout(null);
 
 		/*---ComboBox---*/
-		JComboBox cbEvento = new JComboBox();
+		cbEvento = new JComboBox();
 		ArrayList<Evento> eventos = new EventoDAO().listarTodos();
 		String[] cbMensagem = new String[eventos.size()];
 		for (int i = 0; i < eventos.size(); i++) {
@@ -84,7 +86,7 @@ public class CandidatoView extends JFrame {
 		contentPane.add(cbEvento);
 
 		/*---ComboBox---*/
-		JComboBox cbCafe = new JComboBox();
+		cbCafe = new JComboBox();
 		ArrayList<Cafe> cafes = new CafeDAO().listarTodos();
 		cbMensagem = new String[cafes.size()];
 		for (int i = 0; i < cafes.size(); i++) {
@@ -95,7 +97,7 @@ public class CandidatoView extends JFrame {
 		contentPane.add(cbCafe);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 193, 664, 210);
+		scrollPane.setBounds(10, 193, 664, 213);
 		contentPane.add(scrollPane);
 
 		/*---Table---*/
@@ -150,14 +152,11 @@ public class CandidatoView extends JFrame {
 			/* insere ou altera */
 			public void actionPerformed(ActionEvent arg0) {
 
-				CandidatoDAO dao = new CandidatoDAO();
-				Candidato candidato = new Candidato();
-
 				if (tfId.getText().equals("")) {
-					inserirCandidato(cbEvento, cbCafe, candidato, dao);
+					inserirCandidato();
 
 				} else {
-					alterarCandidato(cbEvento, cbCafe, candidato, dao);
+					alterarCandidato();
 				}
 				AtualizarTable();
 				limparTextField();
@@ -172,10 +171,13 @@ public class CandidatoView extends JFrame {
 		btExcluir.addActionListener(new ActionListener() {
 			/* exclui */
 			public void actionPerformed(ActionEvent e) {
-				CandidatoDAO dao = new CandidatoDAO();
-				dao.excluir(Integer.parseInt(tfId.getText()));
-				limparTextField();
-				AtualizarTable();
+				if (tfId.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Clique na tabela e escolha o dado que deseja excluir!");
+				} else {
+					dao.excluir(Integer.parseInt(tfId.getText()));
+					limparTextField();
+					AtualizarTable();
+				}
 			}
 		});
 
@@ -195,7 +197,7 @@ public class CandidatoView extends JFrame {
 		JButton btVoltar = new JButton("Voltar");
 		btVoltar.setBounds(10, 159, 89, 23);
 		contentPane.add(btVoltar);
-
+		/* onclick */
 		btVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainView main = new MainView();
@@ -214,7 +216,6 @@ public class CandidatoView extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				String pesquisa = tfPesquisar.getText();
-				System.out.println(pesquisa);
 				AtualizarTable(pesquisa);
 			}
 		});
@@ -243,23 +244,49 @@ public class CandidatoView extends JFrame {
 		tfPesquisar.setText("");
 	}
 
-	private void inserirCandidato(JComboBox cbEvento, JComboBox cbCafe, Candidato candidato, CandidatoDAO dao) {
+	private void inserirCandidato() {
+		try {
+			candidato.setNome(tfNome.getText());
+			candidato.setSobrenome(tfSobrenome.getText());
+			candidato.setEventos(new EventoDAO().listarNome(cbEvento.getSelectedItem().toString()));
+			candidato.setCafe(new CafeDAO().listarNome(cbCafe.getSelectedItem().toString()));
 
-		candidato.setNome(tfNome.getText());
-		candidato.setSobrenome(tfSobrenome.getText());
-		candidato.setEventos(new EventoDAO().listarTodosNome(cbEvento.getSelectedItem().toString()));
-		candidato.setCafe(new CafeDAO().listarTodosNome(cbCafe.getSelectedItem().toString()));
-		dao.inserir(candidato);
+			if (tfNome.getText().equals("") || tfSobrenome.getText().equals("")) {
+				throw new RuntimeException();
+			} else {
+				dao.inserir(candidato);
+				JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!");
+			}
+
+		} catch (Exception e) {
+			if (candidato.getNome() == null || candidato.getSobrenome() == null || candidato.getId() == 0) {
+				JOptionPane.showMessageDialog(null, "Você deve preencher todos os dados!");
+			}
+		}
 	}
 
-	private void alterarCandidato(JComboBox cbEvento, JComboBox cbCafe, Candidato candidato, CandidatoDAO dao) {
+	private void alterarCandidato() {
+		try {
+			candidato.setId(Integer.parseInt(tfId.getText()));
+			candidato.setNome(tfNome.getText());
+			candidato.setSobrenome(tfSobrenome.getText());
+			candidato.setEventos(new EventoDAO().listarNome(cbEvento.getSelectedItem().toString()));
+			candidato.setCafe(new CafeDAO().listarNome(cbCafe.getSelectedItem().toString()));
 
-		candidato.setId(Integer.parseInt(tfId.getText()));
-		candidato.setNome(tfNome.getText());
-		candidato.setSobrenome(tfSobrenome.getText());
-		candidato.setEventos(new EventoDAO().listarTodosNome(cbEvento.getSelectedItem().toString()));
-		candidato.setCafe(new CafeDAO().listarTodosNome(cbCafe.getSelectedItem().toString()));
-		dao.alterar(candidato);
+			if (tfId.getText().equals("") || tfNome.getText().equals("") || tfSobrenome.getText().equals("")) {
+				throw new RuntimeException();
+			} else {
+				dao.alterar(candidato);
+				JOptionPane.showMessageDialog(null, "Dados alterados com sucesso!");
+			}
+
+		} catch (
+
+		Exception e) {
+			if (candidato.getNome() == null || candidato.getSobrenome() == null || candidato.getId() == 0) {
+				JOptionPane.showMessageDialog(null, "Você deve preencher todos os dados!");
+			}
+		}
 	}
 
 	private void AtualizarTable() {
@@ -268,8 +295,12 @@ public class CandidatoView extends JFrame {
 	}
 
 	private void AtualizarTable(String nome) {
+		try {
+			CandidatoTableModel ctm = new CandidatoTableModel(nome);
+			table.setModel(new DefaultTableModel(ctm.data, ctm.columnNames));
 
-		CandidatoTableModel ctm = new CandidatoTableModel(nome);
-		table.setModel(new DefaultTableModel(ctm.data, ctm.columnNames));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+		}
 	}
 }
