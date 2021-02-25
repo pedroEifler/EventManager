@@ -90,6 +90,21 @@ public class MainView extends JFrame {
 		btCafe.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btCafe.setBounds(10, 107, 154, 37);
 		contentPane.add(btCafe);
+		
+		/*---Etapas---*/
+		JButton btEtapas = new JButton("Etapas");
+		btEtapas.setIcon(new ImageIcon("C:\\Users\\pedro\\eclipse-workspace\\EventManager\\util\\Files-icon.png"));
+		btEtapas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EtapaView etapaView = new EtapaView();
+				etapaView.setLocationRelativeTo(null);
+				etapaView.setVisible(true);
+				setVisible(false);
+			}
+		});
+		btEtapas.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btEtapas.setBounds(10, 155, 154, 37);
+		contentPane.add(btEtapas);
 
 		JLabel lblNewLabel = new JLabel("Event");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);

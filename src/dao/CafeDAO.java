@@ -15,7 +15,6 @@ public class CafeDAO implements IDAO<Cafe> {
 	private PreparedStatement stmt;
 	private Statement st;
 	private ResultSet rs;
-	private ArrayList<Cafe> lista = new ArrayList<Cafe>();
 
 	public CafeDAO() {
 		conn = new ConnectionFactory().getConexao();
@@ -24,6 +23,7 @@ public class CafeDAO implements IDAO<Cafe> {
 	@Override
 	public ArrayList<Cafe> listarTodos() {
 		String sql = "SELECT * FROM cafe";
+		ArrayList<Cafe> lista = new ArrayList<Cafe>();
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
@@ -78,6 +78,7 @@ public class CafeDAO implements IDAO<Cafe> {
 	@Override
 	public ArrayList<Cafe> listarTodosNome(String nome) {
 		String sql = "SELECT * FROM cafe WHERE nome LIKE '%" + nome + "%'";
+		ArrayList<Cafe> lista = new ArrayList<Cafe>();
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
@@ -120,7 +121,7 @@ public class CafeDAO implements IDAO<Cafe> {
 			stmt.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Não foi possivel alterar os dados no banco!");
-
+			throw new RuntimeException(e);
 		}
 	}
 

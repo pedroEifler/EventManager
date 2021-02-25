@@ -8,7 +8,7 @@ import model.Candidato;
 public class CandidatoTableModel {
 
 	public Object[][] data;
-	public Object[] columnNames = { "Codigo", "Nome", "Sobrenome", "Salas", "Espaço café" };
+	public Object[] columnNames = { "Codigo", "Nome", "Sobrenome" };
 
 	public CandidatoTableModel(String nome) {
 		
@@ -32,12 +32,6 @@ public class CandidatoTableModel {
 					break;
 				case 2:
 					data[i][j] = candidato.get(i).getSobrenome();
-					break;
-				case 3:
-					data[i][j] = candidato.get(i).getEventos().getNome();
-					break;
-				case 4:
-					data[i][j] = candidato.get(i).getCafe().getNome();
 					break;
 
 				default:

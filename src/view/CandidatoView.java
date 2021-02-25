@@ -12,17 +12,12 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
-import dao.CafeDAO;
 import dao.CandidatoDAO;
-import dao.EventoDAO;
-import model.Cafe;
+import dao.CandidatoHasCafeDAO;
 import model.Candidato;
-import model.Evento;
+import model.CandidatoHasCafe;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
@@ -40,8 +35,6 @@ public class CandidatoView extends JFrame {
 	private JTextField tfPesquisar;
 	private JTable table;
 	private JTextField tfId;
-	private JComboBox cbEvento;
-	private JComboBox cbCafe;
 	private CandidatoDAO dao = new CandidatoDAO();
 	private Candidato candidato = new Candidato();
 
@@ -74,30 +67,8 @@ public class CandidatoView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		/*---ComboBox---*/
-		cbEvento = new JComboBox();
-		ArrayList<Evento> eventos = new EventoDAO().listarTodos();
-		String[] cbMensagem = new String[eventos.size()];
-		for (int i = 0; i < eventos.size(); i++) {
-			cbMensagem[i] = eventos.get(i).getNome();
-		}
-		cbEvento.setModel(new DefaultComboBoxModel(cbMensagem));
-		cbEvento.setBounds(114, 86, 560, 20);
-		contentPane.add(cbEvento);
-
-		/*---ComboBox---*/
-		cbCafe = new JComboBox();
-		ArrayList<Cafe> cafes = new CafeDAO().listarTodos();
-		cbMensagem = new String[cafes.size()];
-		for (int i = 0; i < cafes.size(); i++) {
-			cbMensagem[i] = cafes.get(i).getNome();
-		}
-		cbCafe.setModel(new DefaultComboBoxModel(cbMensagem));
-		cbCafe.setBounds(114, 111, 560, 20);
-		contentPane.add(cbCafe);
-
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 193, 664, 213);
+		scrollPane.setBounds(10, 168, 664, 213);
 		contentPane.add(scrollPane);
 
 		/*---Table---*/
@@ -111,41 +82,31 @@ public class CandidatoView extends JFrame {
 				tfId.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
 				tfNome.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
 				tfSobrenome.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-				cbEvento.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3).toString());
-				cbCafe.setSelectedItem(table.getValueAt(table.getSelectedRow(), 4).toString());
 			}
 		});
 		AtualizarTable();
 
 		JLabel lblNewLabel = new JLabel("Nome:");
-		lblNewLabel.setBounds(10, 39, 94, 14);
+		lblNewLabel.setBounds(10, 36, 94, 14);
 		contentPane.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Sobrenome:");
-		lblNewLabel_1.setBounds(10, 64, 94, 14);
+		lblNewLabel_1.setBounds(10, 61, 94, 14);
 		contentPane.add(lblNewLabel_1);
 
-		JLabel lblNewLabel_2 = new JLabel("Evento:");
-		lblNewLabel_2.setBounds(10, 89, 94, 14);
-		contentPane.add(lblNewLabel_2);
-
-		JLabel lblNewLabel_3 = new JLabel("Espa\u00E7o de Caf\u00E9:");
-		lblNewLabel_3.setBounds(10, 114, 94, 14);
-		contentPane.add(lblNewLabel_3);
-
 		tfNome = new JTextField();
-		tfNome.setBounds(114, 36, 560, 20);
+		tfNome.setBounds(114, 33, 560, 20);
 		contentPane.add(tfNome);
 		tfNome.setColumns(10);
 
 		tfSobrenome = new JTextField();
-		tfSobrenome.setBounds(114, 61, 560, 20);
+		tfSobrenome.setBounds(114, 58, 560, 20);
 		contentPane.add(tfSobrenome);
 		tfSobrenome.setColumns(10);
 
 		/*---Salvar---*/
 		JButton btSalvar = new JButton("Salvar");
-		btSalvar.setBounds(585, 159, 89, 23);
+		btSalvar.setBounds(585, 110, 89, 23);
 		contentPane.add(btSalvar);
 		/* onclick */
 		btSalvar.addActionListener(new ActionListener() {
@@ -165,7 +126,7 @@ public class CandidatoView extends JFrame {
 
 		/*---Excluir---*/
 		JButton btExcluir = new JButton("Excluir");
-		btExcluir.setBounds(486, 159, 89, 23);
+		btExcluir.setBounds(486, 110, 89, 23);
 		contentPane.add(btExcluir);
 		/* onclick */
 		btExcluir.addActionListener(new ActionListener() {
@@ -183,7 +144,7 @@ public class CandidatoView extends JFrame {
 
 		/*---Limpar---*/
 		JButton btLimpar = new JButton("Limpar");
-		btLimpar.setBounds(387, 159, 89, 23);
+		btLimpar.setBounds(387, 110, 89, 23);
 		contentPane.add(btLimpar);
 		/* onclick */
 		btLimpar.addActionListener(new ActionListener() {
@@ -195,7 +156,7 @@ public class CandidatoView extends JFrame {
 
 		/*---Voltar---*/
 		JButton btVoltar = new JButton("Voltar");
-		btVoltar.setBounds(10, 159, 89, 23);
+		btVoltar.setBounds(10, 110, 89, 23);
 		contentPane.add(btVoltar);
 		/* onclick */
 		btVoltar.addActionListener(new ActionListener() {
@@ -208,7 +169,7 @@ public class CandidatoView extends JFrame {
 		});
 
 		JLabel lblNewLabel_4 = new JLabel("Pesquisar:");
-		lblNewLabel_4.setBounds(10, 417, 94, 14);
+		lblNewLabel_4.setBounds(10, 410, 94, 14);
 		contentPane.add(lblNewLabel_4);
 
 		tfPesquisar = new JTextField();
@@ -219,7 +180,7 @@ public class CandidatoView extends JFrame {
 				AtualizarTable(pesquisa);
 			}
 		});
-		tfPesquisar.setBounds(114, 414, 560, 20);
+		tfPesquisar.setBounds(114, 407, 560, 20);
 		contentPane.add(tfPesquisar);
 		tfPesquisar.setColumns(10);
 
@@ -232,6 +193,27 @@ public class CandidatoView extends JFrame {
 		tfId.setBounds(114, 8, 560, 20);
 		contentPane.add(tfId);
 		tfId.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Adicionar cafe");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CandidatoHasCafeDAO C_CDao = new CandidatoHasCafeDAO();
+				CandidatoHasCafe C_C = new CandidatoHasCafe();
+				C_C.setIdCafe(2);
+				C_C.setIdCandidato(2);
+				C_CDao.inserir(C_C);
+			}
+		});
+		btnNewButton.setBounds(114, 110, 113, 23);
+		contentPane.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Adicionar evento");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnNewButton_1.setBounds(237, 110, 113, 23);
+		contentPane.add(btnNewButton_1);
 
 		setVisible(false);
 	}
@@ -248,8 +230,6 @@ public class CandidatoView extends JFrame {
 		try {
 			candidato.setNome(tfNome.getText());
 			candidato.setSobrenome(tfSobrenome.getText());
-			candidato.setEventos(new EventoDAO().listarNome(cbEvento.getSelectedItem().toString()));
-			candidato.setCafe(new CafeDAO().listarNome(cbCafe.getSelectedItem().toString()));
 
 			if (tfNome.getText().equals("") || tfSobrenome.getText().equals("")) {
 				throw new RuntimeException();
@@ -270,8 +250,6 @@ public class CandidatoView extends JFrame {
 			candidato.setId(Integer.parseInt(tfId.getText()));
 			candidato.setNome(tfNome.getText());
 			candidato.setSobrenome(tfSobrenome.getText());
-			candidato.setEventos(new EventoDAO().listarNome(cbEvento.getSelectedItem().toString()));
-			candidato.setCafe(new CafeDAO().listarNome(cbCafe.getSelectedItem().toString()));
 
 			if (tfId.getText().equals("") || tfNome.getText().equals("") || tfSobrenome.getText().equals("")) {
 				throw new RuntimeException();

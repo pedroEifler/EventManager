@@ -15,7 +15,6 @@ public class EventoDAO implements IDAO<Evento> {
 	private PreparedStatement stmt;
 	private Statement st;
 	private ResultSet rs;
-	private ArrayList<Evento> lista = new ArrayList<Evento>();
 
 	public EventoDAO() {
 		conn = new ConnectionFactory().getConexao();
@@ -24,6 +23,7 @@ public class EventoDAO implements IDAO<Evento> {
 	@Override
 	public ArrayList<Evento> listarTodos() {
 		String sql = "SELECT * FROM eventos";
+		ArrayList<Evento> lista = new ArrayList<Evento>();
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
@@ -78,6 +78,7 @@ public class EventoDAO implements IDAO<Evento> {
 	@Override
 	public ArrayList<Evento> listarTodosNome(String nome) {
 		String sql = "SELECT * FROM eventos WHERE nome LIKE '%" + nome + "%'";
+		ArrayList<Evento> lista = new ArrayList<Evento>();
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);

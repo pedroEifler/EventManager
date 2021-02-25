@@ -141,7 +141,7 @@ public class EventoView extends JFrame {
 
 		/*---Voltar---*/
 		JButton btVoltar = new JButton("Voltar");
-		btVoltar.setBounds(15, 110, 89, 23);
+		btVoltar.setBounds(10, 110, 89, 23);
 		contentPane.add(btVoltar);
 		/* onclick */
 		btVoltar.addActionListener(new ActionListener() {

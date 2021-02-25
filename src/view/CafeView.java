@@ -141,7 +141,7 @@ public class CafeView extends JFrame {
 
 		/*---Voltar---*/
 		JButton btVoltar = new JButton("Voltar");
-		btVoltar.setBounds(15, 110, 89, 23);
+		btVoltar.setBounds(10, 110, 89, 23);
 		contentPane.add(btVoltar);
 		/* onclick */
 		btVoltar.addActionListener(new ActionListener() {
@@ -172,7 +172,7 @@ public class CafeView extends JFrame {
 		AtualizarTable();
 
 		JLabel lblNewLabel_3 = new JLabel("Pesquisar: ");
-		lblNewLabel_3.setBounds(10, 415, 94, 14);
+		lblNewLabel_3.setBounds(10, 410, 94, 14);
 		contentPane.add(lblNewLabel_3);
 
 		tfPesquisar = new JTextField();
@@ -183,7 +183,7 @@ public class CafeView extends JFrame {
 				AtualizarTable(nome);
 			}
 		});
-		tfPesquisar.setBounds(114, 412, 560, 20);
+		tfPesquisar.setBounds(114, 407, 560, 20);
 		contentPane.add(tfPesquisar);
 		tfPesquisar.setColumns(10);
 	}
