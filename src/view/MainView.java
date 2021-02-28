@@ -47,6 +47,10 @@ public class MainView extends JFrame {
 
 		/*---Candidatos---*/
 		JButton btCandidatos = new JButton("Candidatos");
+		btCandidatos.setIcon(new ImageIcon("C:\\Users\\pedro\\eclipse-workspace\\EventManager\\util\\Man-icon.png"));
+		btCandidatos.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btCandidatos.setBounds(10, 11, 154, 37);
+		contentPane.add(btCandidatos);
 		btCandidatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CandidatoView candidatoView = new CandidatoView();
@@ -55,13 +59,14 @@ public class MainView extends JFrame {
 				setVisible(false);
 			}
 		});
-		btCandidatos.setIcon(new ImageIcon("C:\\Users\\pedro\\eclipse-workspace\\EventManager\\util\\Man-icon.png"));
-		btCandidatos.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btCandidatos.setBounds(10, 11, 154, 37);
-		contentPane.add(btCandidatos);
 
 		/*---Salas---*/
 		JButton btSalas = new JButton("Salas");
+		btSalas.setForeground(Color.BLACK);
+		btSalas.setIcon(new ImageIcon("C:\\Users\\pedro\\eclipse-workspace\\EventManager\\util\\calendar-icon.png"));
+		btSalas.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btSalas.setBounds(10, 59, 154, 37);
+		contentPane.add(btSalas);
 		btSalas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				EventoView eventoView = new EventoView();
@@ -70,11 +75,6 @@ public class MainView extends JFrame {
 				setVisible(false);
 			}
 		});
-		btSalas.setForeground(Color.BLACK);
-		btSalas.setIcon(new ImageIcon("C:\\Users\\pedro\\eclipse-workspace\\EventManager\\util\\calendar-icon.png"));
-		btSalas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btSalas.setBounds(10, 59, 154, 37);
-		contentPane.add(btSalas);
 
 		/*---Cafe---*/
 		JButton btCafe = new JButton("Caf\u00E9");
@@ -94,6 +94,9 @@ public class MainView extends JFrame {
 		/*---Etapas---*/
 		JButton btEtapas = new JButton("Etapas");
 		btEtapas.setIcon(new ImageIcon("C:\\Users\\pedro\\eclipse-workspace\\EventManager\\util\\Files-icon.png"));
+		btEtapas.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btEtapas.setBounds(10, 155, 154, 37);
+		contentPane.add(btEtapas);
 		btEtapas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				EtapaView etapaView = new EtapaView();
@@ -102,10 +105,8 @@ public class MainView extends JFrame {
 				setVisible(false);
 			}
 		});
-		btEtapas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btEtapas.setBounds(10, 155, 154, 37);
-		contentPane.add(btEtapas);
 
+		/*---Titulo---*/
 		JLabel lblNewLabel = new JLabel("Event");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 30));

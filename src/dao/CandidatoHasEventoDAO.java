@@ -11,6 +11,7 @@ import model.CandidatoHasEvento;
 import model.Evento;
 
 public class CandidatoHasEventoDAO {
+
 	private Connection conn;
 	private PreparedStatement stmt;
 	private Statement st;
@@ -52,6 +53,7 @@ public class CandidatoHasEventoDAO {
 			stmt.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Não foi possivel inserir os dados no banco!");
+			throw new RuntimeException(e);
 		}
 	}
 

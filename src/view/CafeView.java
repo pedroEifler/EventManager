@@ -20,12 +20,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.Font;
 
 public class CafeView extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField tfId;
@@ -33,6 +31,8 @@ public class CafeView extends JFrame {
 	private JTextField tfLotacao;
 	private JTable table;
 	private JTextField tfPesquisar;
+	private CafeDAO dao = new CafeDAO();
+	private Cafe cafe = new Cafe();
 
 	/**
 	 * Launch the application.
@@ -62,48 +62,67 @@ public class CafeView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		PainelInputs();
+
+		PainelTable();
+
+		AtualizarTable();
+	}
+
+	private void PainelInputs() {
+		JPanel painelInputs = new JPanel();
+		painelInputs.setBounds(10, 11, 664, 154);
+		contentPane.add(painelInputs);
+		painelInputs.setLayout(null);
+
+		/*---Titulo---*/
+		JLabel lblNewLabel_4 = new JLabel("Cadastro dos Espa\u00E7o de Caf\u00E9");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_4.setBounds(10, 11, 644, 14);
+		painelInputs.add(lblNewLabel_4);
+
+		/*---Codigo---*/
 		JLabel lblNewLabel = new JLabel("Codigo: ");
-		lblNewLabel.setBounds(10, 11, 94, 14);
-		contentPane.add(lblNewLabel);
-
-		JLabel lblNewLabel_1 = new JLabel("Nome:");
-		lblNewLabel_1.setBounds(10, 36, 94, 14);
-		contentPane.add(lblNewLabel_1);
-
-		JLabel lblNewLabel_2 = new JLabel("Lota\u00E7\u00E3o: ");
-		lblNewLabel_2.setBounds(10, 61, 94, 14);
-		contentPane.add(lblNewLabel_2);
+		lblNewLabel.setBounds(10, 45, 94, 14);
+		painelInputs.add(lblNewLabel);
 
 		tfId = new JTextField();
+		tfId.setBounds(114, 39, 540, 20);
+		painelInputs.add(tfId);
 		tfId.setEditable(false);
-		tfId.setBounds(114, 8, 560, 20);
-		contentPane.add(tfId);
 		tfId.setColumns(10);
 
+		/*---Nome---*/
+		JLabel lblNewLabel_1 = new JLabel("Nome:");
+		lblNewLabel_1.setBounds(10, 70, 94, 14);
+		painelInputs.add(lblNewLabel_1);
+
 		tfNome = new JTextField();
-		tfNome.setBounds(114, 33, 560, 20);
-		contentPane.add(tfNome);
+		tfNome.setBounds(114, 64, 540, 20);
+		painelInputs.add(tfNome);
 		tfNome.setColumns(10);
 
+		/*---Lotação---*/
+		JLabel lblNewLabel_2 = new JLabel("Lota\u00E7\u00E3o: ");
+		lblNewLabel_2.setBounds(10, 95, 94, 14);
+		painelInputs.add(lblNewLabel_2);
+
 		tfLotacao = new JTextField();
-		tfLotacao.setBounds(114, 58, 560, 20);
-		contentPane.add(tfLotacao);
+		tfLotacao.setBounds(114, 89, 540, 20);
+		painelInputs.add(tfLotacao);
 		tfLotacao.setColumns(10);
 
 		/*---Salvar---*/
 		JButton btSalvar = new JButton("Salvar");
-		btSalvar.setBounds(585, 110, 89, 23);
-		contentPane.add(btSalvar);
-		/* onclick */
+		btSalvar.setBounds(565, 120, 89, 23);
+		painelInputs.add(btSalvar);
+
 		btSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CafeDAO dao = new CafeDAO();
-				Cafe cafe = new Cafe();
-
 				if (tfId.getText().equals("")) {
-					InserirCafe(dao, cafe);
+					InserirCafe();
 				} else {
-					AlterarCafe(dao, cafe);
+					AlterarCafe();
 				}
 				AtualizarTable();
 				LimparTextField();
@@ -112,15 +131,13 @@ public class CafeView extends JFrame {
 
 		/*---Excluir---*/
 		JButton btExcluir = new JButton("Excluir");
-		btExcluir.setBounds(486, 110, 89, 23);
-		contentPane.add(btExcluir);
-		/* onclick */
+		btExcluir.setBounds(466, 120, 89, 23);
+		painelInputs.add(btExcluir);
 		btExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (tfId.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Clique na tabela e escolha o dado que deseja excluir!");
 				} else {
-					CafeDAO dao = new CafeDAO();
 					dao.excluir(Integer.parseInt(tfId.getText()));
 					AtualizarTable();
 					LimparTextField();
@@ -130,9 +147,8 @@ public class CafeView extends JFrame {
 
 		/*---Limpar---*/
 		JButton btLimpar = new JButton("Limpar");
-		btLimpar.setBounds(387, 110, 89, 23);
-		contentPane.add(btLimpar);
-		/* onclick */
+		btLimpar.setBounds(367, 120, 89, 23);
+		painelInputs.add(btLimpar);
 		btLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				LimparTextField();
@@ -141,9 +157,8 @@ public class CafeView extends JFrame {
 
 		/*---Voltar---*/
 		JButton btVoltar = new JButton("Voltar");
-		btVoltar.setBounds(10, 110, 89, 23);
-		contentPane.add(btVoltar);
-		/* onclick */
+		btVoltar.setBounds(10, 120, 89, 23);
+		painelInputs.add(btVoltar);
 		btVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				MainView main = new MainView();
@@ -152,15 +167,21 @@ public class CafeView extends JFrame {
 				setVisible(false);
 			}
 		});
+	}
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 168, 664, 213);
-		contentPane.add(scrollPane);
+	private void PainelTable() {
+		JPanel panel = new JPanel();
+		panel.setBounds(10, 176, 664, 274);
+		contentPane.add(panel);
+		panel.setLayout(null);
 
 		/*---Table---*/
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 644, 224);
+		panel.add(scrollPane);
+
 		table = new JTable();
 		scrollPane.setViewportView(table);
-		/* onclick */
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -169,13 +190,16 @@ public class CafeView extends JFrame {
 				tfLotacao.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
 			}
 		});
-		AtualizarTable();
 
+		/*---Pesquisar---*/
 		JLabel lblNewLabel_3 = new JLabel("Pesquisar: ");
-		lblNewLabel_3.setBounds(10, 410, 94, 14);
-		contentPane.add(lblNewLabel_3);
+		lblNewLabel_3.setBounds(10, 246, 94, 14);
+		panel.add(lblNewLabel_3);
 
 		tfPesquisar = new JTextField();
+		tfPesquisar.setBounds(114, 243, 540, 20);
+		panel.add(tfPesquisar);
+		tfPesquisar.setColumns(10);
 		tfPesquisar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -183,9 +207,6 @@ public class CafeView extends JFrame {
 				AtualizarTable(nome);
 			}
 		});
-		tfPesquisar.setBounds(114, 407, 560, 20);
-		contentPane.add(tfPesquisar);
-		tfPesquisar.setColumns(10);
 	}
 
 	private void LimparTextField() {
@@ -210,7 +231,7 @@ public class CafeView extends JFrame {
 		}
 	}
 
-	private void InserirCafe(CafeDAO dao, Cafe cafe) {
+	private void InserirCafe() {
 		try {
 			cafe.setNome(tfNome.getText());
 			cafe.setLotacao(Integer.parseInt(tfLotacao.getText()));
@@ -225,7 +246,7 @@ public class CafeView extends JFrame {
 		}
 	}
 
-	private void AlterarCafe(CafeDAO dao, Cafe cafe) {
+	private void AlterarCafe() {
 		try {
 			cafe.setId(Integer.parseInt(tfId.getText()));
 			cafe.setNome(tfNome.getText());

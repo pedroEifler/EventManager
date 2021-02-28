@@ -35,7 +35,8 @@ public class CafeDAO implements IDAO<Cafe> {
 				lista.add(cafe);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! " + e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 		return lista;
 	}
@@ -53,7 +54,8 @@ public class CafeDAO implements IDAO<Cafe> {
 				cafe.setLotacao(rs.getInt("lotacao"));
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return cafe;
 	}
@@ -70,7 +72,8 @@ public class CafeDAO implements IDAO<Cafe> {
 				cafe.setLotacao(rs.getInt("lotacao"));
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return cafe;
 	}
@@ -90,7 +93,8 @@ public class CafeDAO implements IDAO<Cafe> {
 				lista.add(cafe);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return lista;
 	}
@@ -105,7 +109,8 @@ public class CafeDAO implements IDAO<Cafe> {
 			stmt.execute();
 			stmt.close();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel inserir os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel inserir os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -121,7 +126,7 @@ public class CafeDAO implements IDAO<Cafe> {
 			stmt.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Não foi possivel alterar os dados no banco!");
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -129,19 +134,13 @@ public class CafeDAO implements IDAO<Cafe> {
 	public void excluir(int id) {
 		String sql = "DELETE FROM cafe WHERE id = " + id;
 		try {
+			new CandidatoHasCafeDAO().excluirTodos();
 			st = conn.createStatement();
 			st.execute(sql);
 			st.close();
 		} catch (Exception e) {
-			if (e.getMessage().equals(
-					"Cannot delete or update a parent row: a foreign key constraint fails (`eventmanager`.`candidatos`, CONSTRAINT `fk_Candidatos_Cafe1` FOREIGN KEY (`cafe`) REFERENCES `cafe` (`id`))")) {
-				JOptionPane.showMessageDialog(null,
-						"Não pode excluir os dados, porque está associado há um candidato!");
-
-			} else {
-				JOptionPane.showMessageDialog(null, "Não foi possivel excluir os dados no banco!");
-
-			}
+			JOptionPane.showMessageDialog(null, "Não foi possivel excluir os dados no banco!");
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 }

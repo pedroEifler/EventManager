@@ -6,12 +6,13 @@ import dao.CafeDAO;
 import model.Cafe;
 
 public class CafeTableModel {
+
 	public Object[][] data;
 	public Object[] columnNames = { "Codigo", "Nome", "Lotação" };
 
 	public CafeTableModel(String nome) {
-
 		ArrayList<Cafe> cafe;
+
 		if (nome == null) {
 			cafe = new CafeDAO().listarTodos();
 		} else {

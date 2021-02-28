@@ -35,7 +35,8 @@ public class EventoDAO implements IDAO<Evento> {
 				lista.add(evento);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return lista;
 	}
@@ -53,7 +54,8 @@ public class EventoDAO implements IDAO<Evento> {
 				evento.setLotacao(rs.getInt("lotacao"));
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return evento;
 	}
@@ -70,7 +72,8 @@ public class EventoDAO implements IDAO<Evento> {
 				evento.setLotacao(rs.getInt("lotacao"));
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return evento;
 	}
@@ -90,7 +93,8 @@ public class EventoDAO implements IDAO<Evento> {
 				lista.add(evento);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return lista;
 	}
@@ -106,6 +110,7 @@ public class EventoDAO implements IDAO<Evento> {
 			stmt.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Não foi possivel inserir os dados no banco!");
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -121,6 +126,7 @@ public class EventoDAO implements IDAO<Evento> {
 			stmt.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Não foi possivel alterar os dados no banco!");
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -128,17 +134,13 @@ public class EventoDAO implements IDAO<Evento> {
 	public void excluir(int id) {
 		String sql = "DELETE FROM eventos WHERE id = " + id;
 		try {
+			new CandidatoHasEventoDAO().excluirTodos();
 			st = conn.createStatement();
 			st.execute(sql);
 			st.close();
 		} catch (Exception e) {
-			if (e.getMessage().equals(
-					"Cannot delete or update a parent row: a foreign key constraint fails (`eventmanager`.`candidatos`, CONSTRAINT `fk_Candidatos_Eventos` FOREIGN KEY (`eventos`) REFERENCES `eventos` (`id`))")) {
-				JOptionPane.showMessageDialog(null,
-						"Você não pode excluir essa sala, pois está associada a um candidato! ");
-			} else {
-				JOptionPane.showMessageDialog(null, "Não foi possivel excluir os dados no banco!");
-			}
+			JOptionPane.showMessageDialog(null, "Não foi possivel excluir os dados no banco!");
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 }

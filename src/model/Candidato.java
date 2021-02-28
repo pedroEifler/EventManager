@@ -4,8 +4,6 @@ public class Candidato {
 	private int id;
 	private String nome;
 	private String sobrenome;
-	private Evento eventos;
-	private Cafe cafe;
 
 	/*---Get---*/
 	public int getId() {
@@ -20,14 +18,6 @@ public class Candidato {
 		return sobrenome;
 	}
 
-	public Evento getEventos() {
-		return eventos;
-	}
-
-	public Cafe getCafe() {
-		return cafe;
-	}
-
 	/*---Set---*/
 	public void setId(int id) {
 		this.id = id;
@@ -40,13 +30,4 @@ public class Candidato {
 	public void setSobrenome(String sobrenome) {
 		this.sobrenome = sobrenome;
 	}
-
-	public void setEventos(Evento eventos) {
-		this.eventos = eventos;
-	}
-
-	public void setCafe(Cafe cafe) {
-		this.cafe = cafe;
-	}
-
 }

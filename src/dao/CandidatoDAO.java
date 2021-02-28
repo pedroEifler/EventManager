@@ -33,7 +33,8 @@ public class CandidatoDAO implements IDAO<Candidato> {
 				lista.add(candidato);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return lista;
 	}
@@ -51,7 +52,8 @@ public class CandidatoDAO implements IDAO<Candidato> {
 				candidato.setSobrenome(rs.getString("sobrenome"));
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return candidato;
 	}
@@ -71,7 +73,8 @@ public class CandidatoDAO implements IDAO<Candidato> {
 				lista.add(candidato);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 		return lista;
 	}
@@ -86,16 +89,10 @@ public class CandidatoDAO implements IDAO<Candidato> {
 			stmt.execute();
 			stmt.close();
 
-			adicionarEvento();
-
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel inserir os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel inserir os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
-	}
-
-	private void adicionarEvento() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -109,7 +106,7 @@ public class CandidatoDAO implements IDAO<Candidato> {
 			stmt.execute();
 			stmt.close();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel alterar os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel alterar os dados no banco! " + e.getMessage());
 		}
 	}
 
@@ -121,7 +118,53 @@ public class CandidatoDAO implements IDAO<Candidato> {
 			st.execute(sql);
 			st.close();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Não foi possivel excluir os dados no banco!");
+			JOptionPane.showMessageDialog(null, "Não foi possivel excluir os dados no banco! ");
+			throw new RuntimeException(e.getMessage());
 		}
 	}
+
+	public ArrayList<Object[]> listarCandidatosPorIdCafe(int id) {
+		String sql = "SELECT cand.*, cc.etapas FROM cafe c left join candidatos_has_cafe cc on cc.Cafe_id = c.id left join candidatos cand on cand.id = cc.Candidatos_id WHERE c.id = "
+				+ id;
+		ArrayList<Object[]> lista = new ArrayList<Object[]>();
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			while (rs.next()) {
+				Object[] result = new Object[4];
+				result[0] = rs.getInt("cand.id");
+				result[1] = rs.getString("cand.nome");
+				result[2] = rs.getString("cand.sobrenome");
+				result[3] = rs.getString("cc.etapas");
+				lista.add(result);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			throw new RuntimeException(e.getMessage());
+		}
+		return lista;
+	}
+
+	public ArrayList<Object[]> listarCandidatosPorIdEvento(int id) {
+		String sql = "SELECT cand.*, ce.etapas FROM eventos e left join candidatos_has_eventos ce on ce.Eventos_id = e.id left join candidatos cand on cand.id = ce.Candidatos_id WHERE e.id = "
+				+ id;
+		ArrayList<Object[]> lista = new ArrayList<Object[]>();
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			while (rs.next()) {
+				Object[] result = new Object[4];
+				result[0] = rs.getInt("cand.id");
+				result[1] = rs.getString("cand.nome");
+				result[2] = rs.getString("cand.sobrenome");
+				result[3] = rs.getString("ce.etapas");
+				lista.add(result);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
+			throw new RuntimeException(e.getMessage());
+		}
+		return lista;
+	}
+
 }

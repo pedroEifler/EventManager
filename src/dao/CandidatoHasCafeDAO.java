@@ -6,11 +6,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-
 import model.Cafe;
 import model.Candidato;
 import model.CandidatoHasCafe;
-import model.Evento;
 
 public class CandidatoHasCafeDAO {
 
@@ -31,12 +29,12 @@ public class CandidatoHasCafeDAO {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
-				Object[] d = new Object[4];
-				d[0] = (rs.getString("ca.id"));
-				d[1] = (rs.getString("ca.nome"));
-				d[2] = (rs.getString("ca.lotacao"));
-				d[3] = (rs.getString("cc.etapas"));
-				lista.add(d);
+				Object[] result = new Object[4];
+				result[0] = (rs.getString("ca.id"));
+				result[1] = (rs.getString("ca.nome"));
+				result[2] = (rs.getString("ca.lotacao"));
+				result[3] = (rs.getString("cc.etapas"));
+				lista.add(result);
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Não foi possivel buscar os dados no banco!");
@@ -92,7 +90,7 @@ public class CandidatoHasCafeDAO {
 
 		for (int j = 0; j < numeroDeCandidatos;) {
 			for (int i = 0; i < numeroDeEspacoCafe; i++) {
-				if (j == numeroDeCandidatos) {
+				if (j == numeroDeCandidatos  ||  j > cafe.get(i).getLotacao()) {
 					break;
 				}
 
@@ -100,8 +98,6 @@ public class CandidatoHasCafeDAO {
 				c_C.setIdCandidato(candidato.get(j).getId());
 				c_C.setEtapa(1);
 
-				System.out.println(i);
-				System.out.println(j);
 				c_CDao.inserir(c_C);
 
 				j++;

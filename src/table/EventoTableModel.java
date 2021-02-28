@@ -8,19 +8,17 @@ public class EventoTableModel {
 
 	public Object[][] data;
 	public Object[] columnNames = { "Codigo", "Nome", "Lotação" };
-	private ArrayList<Evento> evento;
 
 	public EventoTableModel(String nome) {
+		ArrayList<Evento> evento;
 
 		if (nome == null) {
 			evento = new EventoDAO().listarTodos();
 		} else {
 			evento = new EventoDAO().listarTodosNome(nome);
 		}
-		
 		data = new Object[evento.size()][columnNames.length];
 
-		
 		for (int i = 0; i < evento.size(); i++) {
 			for (int j = 0; j < columnNames.length; j++) {
 

@@ -13,15 +13,14 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import dao.CandidatoDAO;
-import dao.CandidatoHasCafeDAO;
 import model.Candidato;
-import model.CandidatoHasCafe;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.Font;
 
 public class CandidatoView extends JFrame {
 
@@ -67,50 +66,62 @@ public class CandidatoView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 168, 664, 213);
-		contentPane.add(scrollPane);
+		PainelInputs();
 
-		/*---Table---*/
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		/* onclick */
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			/* pega dados de uma linha na tabela */
-			public void mouseClicked(MouseEvent arg0) {
-				tfId.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-				tfNome.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-				tfSobrenome.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-			}
-		});
+		PainelTable();
+
 		AtualizarTable();
+	}
 
+	public void PainelInputs() {
+		JPanel painelInputs = new JPanel();
+		painelInputs.setBorder(null);
+		painelInputs.setBounds(10, 11, 664, 154);
+		contentPane.add(painelInputs);
+		painelInputs.setLayout(null);
+
+		/*---Titulo---*/
+		JLabel lblNewLabel_2 = new JLabel("Cadastro de Candidatos");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_2.setBounds(10, 11, 644, 14);
+		painelInputs.add(lblNewLabel_2);
+
+		/*---Codigo---*/
+		JLabel lblNewLabel_5 = new JLabel("Codigo:");
+		lblNewLabel_5.setBounds(10, 45, 94, 14);
+		painelInputs.add(lblNewLabel_5);
+
+		tfId = new JTextField();
+		tfId.setBounds(114, 39, 540, 20);
+		painelInputs.add(tfId);
+		tfId.setEditable(false);
+		tfId.setColumns(10);
+
+		/*---Nome---*/
 		JLabel lblNewLabel = new JLabel("Nome:");
-		lblNewLabel.setBounds(10, 36, 94, 14);
-		contentPane.add(lblNewLabel);
-
-		JLabel lblNewLabel_1 = new JLabel("Sobrenome:");
-		lblNewLabel_1.setBounds(10, 61, 94, 14);
-		contentPane.add(lblNewLabel_1);
+		lblNewLabel.setBounds(10, 70, 94, 14);
+		painelInputs.add(lblNewLabel);
 
 		tfNome = new JTextField();
-		tfNome.setBounds(114, 33, 560, 20);
-		contentPane.add(tfNome);
+		tfNome.setBounds(114, 64, 540, 20);
+		painelInputs.add(tfNome);
 		tfNome.setColumns(10);
 
+		/*---Sobrenome---*/
+		JLabel lblNewLabel_1 = new JLabel("Sobrenome:");
+		lblNewLabel_1.setBounds(10, 95, 94, 14);
+		painelInputs.add(lblNewLabel_1);
+
 		tfSobrenome = new JTextField();
-		tfSobrenome.setBounds(114, 58, 560, 20);
-		contentPane.add(tfSobrenome);
+		tfSobrenome.setBounds(114, 89, 540, 20);
+		painelInputs.add(tfSobrenome);
 		tfSobrenome.setColumns(10);
 
 		/*---Salvar---*/
 		JButton btSalvar = new JButton("Salvar");
-		btSalvar.setBounds(585, 110, 89, 23);
-		contentPane.add(btSalvar);
-		/* onclick */
+		btSalvar.setBounds(565, 120, 89, 23);
+		painelInputs.add(btSalvar);
 		btSalvar.addActionListener(new ActionListener() {
-			/* insere ou altera */
 			public void actionPerformed(ActionEvent arg0) {
 
 				if (tfId.getText().equals("")) {
@@ -126,11 +137,9 @@ public class CandidatoView extends JFrame {
 
 		/*---Excluir---*/
 		JButton btExcluir = new JButton("Excluir");
-		btExcluir.setBounds(486, 110, 89, 23);
-		contentPane.add(btExcluir);
-		/* onclick */
+		btExcluir.setBounds(466, 120, 89, 23);
+		painelInputs.add(btExcluir);
 		btExcluir.addActionListener(new ActionListener() {
-			/* exclui */
 			public void actionPerformed(ActionEvent e) {
 				if (tfId.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Clique na tabela e escolha o dado que deseja excluir!");
@@ -144,11 +153,9 @@ public class CandidatoView extends JFrame {
 
 		/*---Limpar---*/
 		JButton btLimpar = new JButton("Limpar");
-		btLimpar.setBounds(387, 110, 89, 23);
-		contentPane.add(btLimpar);
-		/* onclick */
+		btLimpar.setBounds(367, 120, 89, 23);
+		painelInputs.add(btLimpar);
 		btLimpar.addActionListener(new ActionListener() {
-			/* limpa */
 			public void actionPerformed(ActionEvent arg0) {
 				limparTextField();
 			}
@@ -156,9 +163,8 @@ public class CandidatoView extends JFrame {
 
 		/*---Voltar---*/
 		JButton btVoltar = new JButton("Voltar");
-		btVoltar.setBounds(10, 110, 89, 23);
-		contentPane.add(btVoltar);
-		/* onclick */
+		btVoltar.setBounds(10, 120, 89, 23);
+		painelInputs.add(btVoltar);
 		btVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainView main = new MainView();
@@ -168,11 +174,26 @@ public class CandidatoView extends JFrame {
 			}
 		});
 
-		JLabel lblNewLabel_4 = new JLabel("Pesquisar:");
-		lblNewLabel_4.setBounds(10, 410, 94, 14);
-		contentPane.add(lblNewLabel_4);
+	}
+
+	private void PainelTable() {
+		JPanel painelTable = new JPanel();
+		painelTable.setBorder(null);
+		painelTable.setBounds(10, 176, 664, 274);
+		contentPane.add(painelTable);
+		painelTable.setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 644, 221);
+		painelTable.add(scrollPane);
+
+		/*---Table---*/
+		table = new JTable();
+		scrollPane.setViewportView(table);
 
 		tfPesquisar = new JTextField();
+		tfPesquisar.setBounds(114, 243, 540, 20);
+		painelTable.add(tfPesquisar);
 		tfPesquisar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -180,42 +201,21 @@ public class CandidatoView extends JFrame {
 				AtualizarTable(pesquisa);
 			}
 		});
-		tfPesquisar.setBounds(114, 407, 560, 20);
-		contentPane.add(tfPesquisar);
 		tfPesquisar.setColumns(10);
 
-		JLabel lblNewLabel_5 = new JLabel("Codigo:");
-		lblNewLabel_5.setBounds(10, 11, 94, 14);
-		contentPane.add(lblNewLabel_5);
-
-		tfId = new JTextField();
-		tfId.setEditable(false);
-		tfId.setBounds(114, 8, 560, 20);
-		contentPane.add(tfId);
-		tfId.setColumns(10);
-		
-		JButton btnNewButton = new JButton("Adicionar cafe");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				CandidatoHasCafeDAO C_CDao = new CandidatoHasCafeDAO();
-				CandidatoHasCafe C_C = new CandidatoHasCafe();
-				C_C.setIdCafe(2);
-				C_C.setIdCandidato(2);
-				C_CDao.inserir(C_C);
+		JLabel lblNewLabel_4 = new JLabel("Pesquisar:");
+		lblNewLabel_4.setBounds(10, 246, 94, 14);
+		painelTable.add(lblNewLabel_4);
+		/* onclick */
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			/* pega dados de uma linha na tabela */
+			public void mouseClicked(MouseEvent arg0) {
+				tfId.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+				tfNome.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+				tfSobrenome.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
 			}
 		});
-		btnNewButton.setBounds(114, 110, 113, 23);
-		contentPane.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Adicionar evento");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnNewButton_1.setBounds(237, 110, 113, 23);
-		contentPane.add(btnNewButton_1);
-
-		setVisible(false);
 	}
 
 	private void limparTextField() {
